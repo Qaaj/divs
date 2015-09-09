@@ -1,13 +1,16 @@
 'use strict'
 var dispatcher = require('../Emitter');
+var dataParser = require('../DataParser');
 import React from 'react';
-
+var random_id = "none";
 
 var Graph = React.createClass({
 
     getInitialState: function() {
+        random_id = "ID_" + Math.round(Math.random() * 10000000);
         return {
-           postObj: {}
+           postObj: {},
+           id: random_id
         };
     },
 
@@ -16,11 +19,9 @@ var Graph = React.createClass({
     },
 
     render: function() {
-
+    
     return <div> 
-            <div className='chart'>
-                    <div id='chart'></div>
-                </div>
+            <div id={random_id}> </div>
         </div>
 
     },
@@ -28,17 +29,15 @@ var Graph = React.createClass({
 
     addListeners: function(){
         
+        var that = this;
         console.log("graph created");
         $.ajax({
             type: "POST",
-            url: "/data/",
-            success: function(html){//html = the server response html code
-                var result = html;
-               
-                 
-                    console.log(result);
-                    var chart = c3.generate(result);
-                
+            url: "/data/" + that.props.ticker,
+            success: function(html){
+                var obj = dataParser(html);
+                obj["bindto"] = "#" + that.state.id;
+                var chart = c3.generate(obj);   
             }
         });
      

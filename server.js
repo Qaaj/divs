@@ -14,41 +14,22 @@ var publicPath = path.resolve(__dirname, 'public');
 var fs = require("fs"),
     json;
 
-function readJsonFileSync(filepath, encoding){
-
-    if (typeof (encoding) == 'undefined'){
-        encoding = 'utf8';
-    }
-    var file = fs.readFileSync(filepath, encoding);
-    return JSON.parse(file);
-}
-
-function getConfig(file){
-
-    var filepath = __dirname + '/' + file;
-    return readJsonFileSync(filepath);
-}
-
-//assume that config.json is in application root
-
-
-
-
-
+// var tsvToJson = require('./app/tsv-to-json.js');
+var csvToJson = require('./app/csv-to-json.js');
 app.use(express.static(publicPath));
 
-app.all('/db/*', function (req, res) {
-  proxy.web(req, res, {
-    target: 'https://glowing-carpet-4534.firebaseio.com/'
+app.all('/data/:id', function (req, res) {
+  
+  fs.readFile('data/div_' + req.params.id + '.csv', 'utf8', function (err,data) {
+    if (err) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({}));
+      return console.log(err);
+    }
+    res.setHeader('Content-Type', 'application/json');
+    var result = csvToJson(data);
+    res.send(result);
   });
-});
-
-
-
-app.all('/data/*', function (req, res) {
-  var json = getConfig('config.json');
-  res.setHeader('Content-Type', 'application/json');
-  res.send(json);
 });
 
 
@@ -61,6 +42,7 @@ if (!isProduction) {
         target: 'http://127.0.0.1:3001'
     });
   });
+
 
 
   app.all('/socket.io*', function (req, res) {

@@ -2,11 +2,16 @@
 var dispatcher = require('./Emitter');
 var Graph = require("./components/Graph.jsx");
 
-
 import React from 'react';
 
-React.render(<Graph  />, document.getElementById("content"));
+
+$('.chartr').each(function(i, obj) {
+        var ticker = $(obj).text();
+        React.render(<Graph  ticker={ticker} />, obj);
+        $("#content").append(obj);
+});
 
 dispatcher.setMaxListeners(100);
+
 
                
