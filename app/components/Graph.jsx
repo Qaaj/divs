@@ -30,12 +30,11 @@ var Graph = React.createClass({
     addListeners: function(){
         
         var that = this;
-        console.log("graph created");
         $.ajax({
             type: "POST",
             url: "/data/" + that.props.ticker,
             success: function(html){
-                var obj = dataParser(html);
+                var obj = dataParser(that.props.ticker,html);
                 obj["bindto"] = "#" + that.state.id;
                 var chart = c3.generate(obj);   
             }

@@ -7,7 +7,6 @@ var mainPath = path.resolve(__dirname, 'app', 'main.js');
 var config = {
   
   // We change to normal source mapping, if you need them
-  devtool: 'source-map',
   entry: mainPath,
   output: {
     path: buildPath,
@@ -21,8 +20,18 @@ var config = {
     },{
       test: /\.css$/,
       loader: 'style!css'
-    }]
-  }
+    },{
+            test: /\.jsx?$/,
+            exclude: /(node_modules|bower_components)/,
+            loader: 'babel'
+        }]
+  },
+    plugins: [
+        new Webpack.optimize.UglifyJsPlugin({
+        compress: {
+           warnings: false
+        }})
+    ]
 };
 
 module.exports = config;

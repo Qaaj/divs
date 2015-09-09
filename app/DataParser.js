@@ -1,8 +1,8 @@
-module.exports = function(input) {
+module.exports = function(name,input) {
 
     // return json;
     var data = {data:{},grid:{x:{lines:[]}}};
-    var divs = ["Dividends"];
+    var divs = [name];
     var x = ["x"];
 
     var axis = {
@@ -27,8 +27,8 @@ module.exports = function(input) {
         }
     }
         
-
-    data.data.types = {'Dividends':'area-step'};
+    data.data.types = {};
+    data.data.types[name] = 'area-step';
     data.data["x"] = "x";
     data.data.columns = [];
     data.data.columns.push(x);
