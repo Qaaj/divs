@@ -20,6 +20,10 @@ $(".ticker-input").keyup(function (e) {
     }
 });
 
+$(".clear").click(function(){
+	$("#content").html("");
+});
+
 dispatcher.setMaxListeners(100);
 
 
