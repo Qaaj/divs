@@ -9,7 +9,6 @@ var Graph = React.createClass({
     getInitialState: function() {
         random_id = "ID_" + Math.round(Math.random() * 10000000);
         return {
-           postObj: {},
            id: random_id
         };
     },
@@ -32,7 +31,7 @@ var Graph = React.createClass({
         var that = this;
         $.ajax({
             type: "POST",
-            url: "/data/" + that.props.ticker,
+            url: "/dividends/" + that.props.ticker,
             success: function(html){
                 var obj = dataParser(that.props.ticker,html);
                 obj["bindto"] = "#" + that.state.id;

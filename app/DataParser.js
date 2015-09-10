@@ -2,7 +2,7 @@ module.exports = function(name,input) {
 
     // return json;
     var data = {data:{},grid:{x:{lines:[]}}};
-    var divs = [name];
+    var divs = ["Dividend"];
     var x = ["x"];
 
     var axis = {
@@ -15,6 +15,7 @@ module.exports = function(name,input) {
       }
 
      data["axis"] = axis;
+     data["legend"] = {'show':false};
 
     for (var i = 0; i < input.length; i++) {
         var entry = input[i];
@@ -28,7 +29,7 @@ module.exports = function(name,input) {
     }
         
     data.data.types = {};
-    data.data.types[name] = 'area-step';
+    data.data.types["Dividend"] = 'area-step';
     data.data["x"] = "x";
     data.data.columns = [];
     data.data.columns.push(x);
