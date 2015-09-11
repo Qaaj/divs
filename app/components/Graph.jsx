@@ -26,22 +26,34 @@ var Graph = React.createClass({
             type: "POST",
             url: "/dividends/" + that.props.ticker,
             success: function(html){
+
                 var dividends = DataParser.parseDividends(html);
-                var chartData = DataParser.createChartObject(dividends,that.state.id)
-                
-                var chart = c3.generate(chartData);   
+
+                $.ajax({
+                    type: "POST",
+                    url: "/historical/" + that.props.ticker,
+                    success: function(html){
+                        var historical = DataParser.parseHistorical(html,dividends);
+                        var chartData = DataParser.createChartObject(historical,that.state.id)
+                        
+                        var chart = c3.generate(chartData);   
+                    }
+                });
             }
         });
 
-       // $.ajax({
-       //      type: "POST",
-       //      url: "/historical/" + that.props.ticker,
-       //      success: function(html){
-       //          var obj = DataParser.parseHistorical(html);
-       //          obj["bindto"] = "#" + that.state.id;
-       //          var chart = c3.generate(obj);   
-       //      }
-       //  });
+        //  $.ajax({
+        //     type: "POST",
+        //     url: "/historical/" + that.props.ticker,
+        //     success: function(html){
+        //         var historical = DataParser.parseHistorical(html);
+        //         var chartData = DataParser.createChartObject(historical,that.state.id)
+                
+        //         var chart = c3.generate(chartData);   
+        //     }
+        // });
+
+       
 
      
     },
