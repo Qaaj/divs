@@ -38,7 +38,7 @@ class DataParser {
     var price = ["Price"];
 
 
-    for (var i = 0; i < input.length; i+=50) {
+    for (var i = 0; i < input.length; i+=10) {
         var entry = input[i];
         var date = entry["Date"];
         var payout = entry["Close"];
@@ -52,10 +52,42 @@ class DataParser {
     if(data.columns == null) data.columns = [];
     // data.columns.push(x);
     data.columns.push(price);     
-    data.types["Price"] = 'area-spline';
+    data.types["Price"] = 'area';
     data["x"] = "x";
+    data.groups = [
+            ['Dividends', 'Price']
+        ]
 
     return data;
+  }
+
+  static parseYields(historical,dividends,data){
+
+    var dates = {};
+    var yields = ["Yield"];
+
+    for (var i = 0; i < historical.length; i++) {
+      dates[historical[i]["Date"]] =historical[i];
+    };
+
+
+    for (var i = 0; i < dividends.length; i++) {
+      var div = dividends[i];
+      var divAmount = parseFloat(div["Dividends"]);
+      var price = parseInt(dates[div["Date"]]["Close"]);
+      var yieldr = 400*parseFloat(divAmount/price);
+      console.log(price,divAmount,yieldr);
+      yields.push(yieldr);
+    };
+
+    data.columns.push(yields);     
+    data.types["Yield"] = 'spline';
+    data["x"] = "x";
+    data.groups = [
+            ['Dividends', 'Price','Yields']
+        ]
+
+        return data;
   }
 
   static createChartObject(data,id){

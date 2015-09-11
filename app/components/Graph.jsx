@@ -27,14 +27,17 @@ var Graph = React.createClass({
             url: "/dividends/" + that.props.ticker,
             success: function(html){
 
+                var divResult = html;
                 var dividends = DataParser.parseDividends(html);
 
                 $.ajax({
                     type: "POST",
                     url: "/historical/" + that.props.ticker,
                     success: function(html){
+                        var tickerResult = html;
                         var historical = DataParser.parseHistorical(html,dividends);
-                        var chartData = DataParser.createChartObject(historical,that.state.id)
+                        var yields = DataParser.parseYields(tickerResult,divResult,historical);
+                        var chartData = DataParser.createChartObject(yields,that.state.id)
                         
                         var chart = c3.generate(chartData);   
                     }
