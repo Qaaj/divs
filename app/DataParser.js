@@ -76,7 +76,6 @@ class DataParser {
       var divAmount = parseFloat(div["Dividends"]);
       var price = parseInt(dates[div["Date"]]["Close"]);
       var yieldr = 400*parseFloat(divAmount/price);
-      console.log(price,divAmount,yieldr);
       yields.push(yieldr);
     };
 
