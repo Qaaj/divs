@@ -61,7 +61,7 @@ class DataParser {
     return data;
   }
 
-  static parseYields(historical,dividends,data){
+  static parseYields(historical,dividends,data,ticker){
 
     var dates = {};
     var yields = ["Yield"];
@@ -70,23 +70,36 @@ class DataParser {
       dates[historical[i]["Date"]] =historical[i];
     };
 
+    var all = {'ticker':ticker};
 
     for (var i = 0; i < dividends.length; i++) {
+      var all_obj = {};
       var div = dividends[i];
       var divAmount = parseFloat(div["Dividends"]);
       var price = parseInt(dates[div["Date"]]["Close"]);
       var yieldr = 400*parseFloat(divAmount/price);
+      all_obj.yield = yieldr;
+      all_obj.dividend = divAmount;
+      all_obj.price = price;
+      all[div["Date"]] = all_obj;
+
       yields.push(yieldr);
     };
+
+    $.ajax({
+        type: "POST",
+        url: "/save/" + JSON.stringify(all),
+        success: function(html){
+           console.log("succes");
+        }
+    });
 
     data.columns.push(yields);     
     data.types["Yield"] = 'spline';
     data["x"] = "x";
-    data.groups = [
-            ['Dividends', 'Price','Yields']
-        ]
+    data.groups = [['Dividends', 'Price','Yields']]
 
-        return data;
+    return data;
   }
 
   static createChartObject(data,id){

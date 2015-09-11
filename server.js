@@ -35,7 +35,6 @@ function getStockDataURL(ticker){
   return options;
 }
 
-
 app.all('/dividends/:id', function (req, res) {
   var request = http.get(getDivURL(req.params.id), function(rs){
       var data = ''
@@ -49,6 +48,44 @@ app.all('/dividends/:id', function (req, res) {
       })
   })
 });
+
+app.all('/save/:data', function (req, res) {
+    var mongodb = require('mongodb');
+    
+    //We need to work with "MongoClient" interface in order to connect to a mongodb server.
+    var MongoClient = mongodb.MongoClient;
+    
+    // Connection URL. This is where your mongodb server is running.
+    var url = 'mongodb://localhost:27017/divs';
+    
+    // Use connect method to connect to the Server
+    MongoClient.connect(url, function (err, db) {
+      if (err) {
+        console.log('Unable to connect to the mongoDB server. Error:', err);
+      } else {
+        //HURRAY!! We are connected. :)
+        console.log('Connection established to', url);
+    
+        // Get the documents collection
+        var collection = db.collection('yields');
+      
+        var jsn = JSON.parse(req.params.data);      
+    console.log(jsn);
+        // Insert some users
+        collection.insert(jsn, function (err, result) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+          }
+          //Close connection
+          db.close();
+        });
+      }
+    });
+
+});
+
 
 app.all('/historical/:id', function (req, res) {
   var request = http.get(getStockDataURL(req.params.id), function(rs){

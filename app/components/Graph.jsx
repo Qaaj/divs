@@ -36,7 +36,7 @@ var Graph = React.createClass({
                     success: function(html){
                         var tickerResult = html;
                         var historical = DataParser.parseHistorical(html,dividends);
-                        var yields = DataParser.parseYields(tickerResult,divResult,historical);
+                        var yields = DataParser.parseYields(tickerResult,divResult,historical,that.props.ticker);
                         var chartData = DataParser.createChartObject(yields,that.state.id)
                         
                         var chart = c3.generate(chartData);   
