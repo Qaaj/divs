@@ -34,20 +34,7 @@ function getStockDataURL(ticker){
   }
   return options;
 }
-// Read locally stored data
 
-app.all('/data/:id', function (req, res) {
-  fs.readFile('data/div_' + req.params.id + '.csv', 'utf8', function (err,data) {
-    if (err) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({}));
-      return console.log(err);
-    }
-    res.setHeader('Content-Type', 'application/json');
-    var result = csvToJson(data);
-    res.send(result);
-  });
-});
 
 app.all('/dividends/:id', function (req, res) {
   var request = http.get(getDivURL(req.params.id), function(rs){
@@ -76,6 +63,23 @@ app.all('/historical/:id', function (req, res) {
       })
   })
 });
+
+
+// Read locally stored data
+
+// app.all('/data/:id', function (req, res) {
+//   fs.readFile('data/div_' + req.params.id + '.csv', 'utf8', function (err,data) {
+//     if (err) {
+//       res.setHeader('Content-Type', 'application/json');
+//       res.send(JSON.stringify({}));
+//       return console.log(err);
+//     }
+//     res.setHeader('Content-Type', 'application/json');
+//     var result = csvToJson(data);
+//     res.send(result);
+//   });
+// });
+
 
 // Production code
 

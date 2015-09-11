@@ -1,21 +1,15 @@
-module.exports = function(name,input) {
+class DataParser {
 
+  constructor() {
+    
+  }
+ 
+  static parseDividends(input) {
     // return json;
-    var data = {data:{},grid:{x:{lines:[]}}};
-    var divs = ["Dividend"];
+    var data = {};
     var x = ["x"];
+    var divs = ["Dividends"];
 
-    var axis = {
-          'x': {
-              'type': 'timeseries',
-              'tick': {
-                  'format': '%Y-%m-%d'
-              }
-          }
-      }
-
-     data["axis"] = axis;
-     data["legend"] = {'show':false};
 
     for (var i = 0; i < input.length; i++) {
         var entry = input[i];
@@ -28,14 +22,41 @@ module.exports = function(name,input) {
         }
     }
         
-    data.data.types = {};
-    data.data.types["Dividend"] = 'area-step';
-    data.data["x"] = "x";
-    data.data.columns = [];
-    data.data.columns.push(x);
-    data.data.columns.push(divs);
+    data.columns = [];
+    data.columns.push(x);
+    data.columns.push(divs);     
+    data.types = {"Dividends" : 'area-spline'};
+    data["x"] = "x";
 
-    console.log(data)
     return data;
+  }
 
+  static parseHistorical(input) {
+   
+  }
+
+  static createChartObject(data,id){
+
+    var obj = {data:{},grid:{x:{lines:[]}}};
+    // Add it to the correct DOM element
+    obj["bindto"] = "#" + id;
+    // create X axis information
+    var axis = {
+        'x': {
+            'type': 'timeseries',
+            'tick': {
+                'format': '%Y-%m-%d'
+            }
+        }
+    }
+    obj["axis"] = axis;
+    // Hide legend
+    obj["legend"] = {'show':false};
+
+    obj.data =data;
+    
+    return obj;
+  }
 }
+
+module.exports = DataParser;
