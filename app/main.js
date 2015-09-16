@@ -2,6 +2,7 @@ require("./main.css");
 var dispatcher = require('./events/Emitter');
 var GraphContainer = require("./components/GraphContainer.jsx");
 
+import $ from 'jquery';
 import React from 'react';
 
 
