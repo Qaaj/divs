@@ -1,5 +1,5 @@
 require("./main.css");
-var dispatcher = require('./Emitter');
+var dispatcher = require('./events/Emitter');
 var GraphContainer = require("./components/GraphContainer.jsx");
 
 import React from 'react';

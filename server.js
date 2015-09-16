@@ -13,8 +13,8 @@ var publicPath = path.resolve(__dirname, 'public');
 var fs = require("fs");
 app.use(express.static(publicPath));
 
-// var tsvToJson = require('./app/tsv-to-json.js');
-var csvToJson = require('./app/csv-to-json.js');
+// var tsvToJson = require('./app/utils/tsv-to-json.js');
+var csvToJson = require('./app/utils/csv-to-json.js');
 
 
 function getDivURL(ticker){

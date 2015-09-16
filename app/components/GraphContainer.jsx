@@ -1,6 +1,6 @@
 'use strict'
-var dispatcher = require('../Emitter');
-var dataParser = require('../DataParser');
+var dispatcher = require('../events/Emitter');
+var dataParser = require('../core/DataParser');
 var Graph = require("./Graph.jsx");
 import React from 'react';
 var random_id = "none";
